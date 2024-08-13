@@ -13,12 +13,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AbilityBehavior ability;
 
 
-    [SerializeField] WeaponInventory weaponInventory;
+    // [SerializeField] WeaponInventory weaponInventory;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -26,30 +26,52 @@ public class PlayerController : MonoBehaviour
     {
         CheckMoveInput();
         CheckShootInput();
+        CheckSprintInput();
         CheckGrenadeInput();
         CheckAbilityInput();
+        CheckGravity();
         CheckJumpInput();
         CheckLookInput();
         CheckAimDownSightInput();
         CheckReloadInput();
+        CheckGravity();
 
     }
     private void CheckMoveInput()
     {
-        //CALL MOVE BEHAVIOR HERE 
+        move.MovePlayer();
+    }
+
+    private void CheckSprintInput()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            move.SetSprinting(true);
+        }
+        else
+        {
+            move.SetSprinting(false);
+        }
     }
 
     private void CheckJumpInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            jump.Jump();
+            Debug.Log("Player jumped");
+            jump.JumpPlayer();
         }
+    }
+
+    private void CheckGravity()
+    {
+        jump.GravityCalculation();
+        
     }
 
     private void CheckLookInput()
     {
-        //ADD LOOK BEHAVIOR SCRIPT INPUT HERE 
+        look.RotatePlayer();
     }
 
     private void CheckShootInput()
