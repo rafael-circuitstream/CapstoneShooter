@@ -35,8 +35,33 @@ public class PlayerController : MonoBehaviour
         CheckAimDownSightInput();
         CheckReloadInput();
         CheckGravity();
+        ChangeWeaponInput();
 
     }
+
+
+
+    private void ChangeWeaponInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            shoot.ChangeWeapon(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            shoot.ChangeWeapon(1);
+        }
+        else if ( Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            shoot.ChangeWeapon(2);
+        }
+    }
+
+
+
+
+
+
     private void CheckMoveInput()
     {
         move.MovePlayer();
@@ -82,14 +107,18 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        //MAY NEED ADDITIONAL INPUT FOR HOLDING DOWN TO SHOOT 
+        //MAY NEED ADDITIONAL INPUT FOR HOLDING DOWN TO SHOOT burst, or melee
     }    
 
     private void CheckAimDownSightInput()
     {
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && shoot.isAimingDownSight == false)
         {
-            shoot.AimDownSight();
+            shoot.AimDownSightStart();
+        }
+        if (Input.GetMouseButtonUp(1) && shoot.isAimingDownSight )
+        {
+            shoot.AimDownSightEnd();
         }
         
 
