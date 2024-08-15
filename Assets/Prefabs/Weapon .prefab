@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6159210075399676080}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2929359306652179304}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 'WeaponTip '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 8975780895880535434}
   - component: {fileID: 7133916336719193589}
   - component: {fileID: 6102852858010930427}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 'Weapon '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,14 +111,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Starting Weapon
-  weaponType: 0
+  weaponType: 1
   ammoType: 0
-  damage: 0
+  damage: 1
   bulletSpeed: 5
-  range: 0
+  range: 50
   fireRate: 0
   reloadTime: 0
-  weaponTip: {fileID: 2929359306652179304}
   projectilePrefab: {fileID: 3766763127949734870, guid: b0665eb0f8742e843b89e1160f414cb4,
     type: 3}
   reticle: {fileID: 0}
@@ -155,7 +154,7 @@ GameObject:
   - component: {fileID: 7665229451937660457}
   - component: {fileID: 34538329560272432}
   - component: {fileID: 7527511090193241637}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

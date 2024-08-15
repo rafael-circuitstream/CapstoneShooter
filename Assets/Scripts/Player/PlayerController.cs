@@ -10,10 +10,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private MovementBehavior move;
     [SerializeField] private ShootBehavior shoot;
     [SerializeField] private GrenadeBehavior grenade;
-    [SerializeField] private AbilityBehavior ability;
+    [SerializeField] private EquipmentBehavior equipment;
+    [SerializeField] private InteractBehavior interact;
+    [SerializeField] private PassiveBehavior passive;
 
+
+    [SerializeField] private ShopBehavior shop;
+    private bool isShopOpen = false;
+
+    public int totalPlayerCurrency; //TESTING
 
     // [SerializeField] WeaponInventory weaponInventory;
+    
 
     void Start()
     {
@@ -28,7 +36,8 @@ public class PlayerController : MonoBehaviour
         CheckShootInput();
         CheckSprintInput();
         CheckGrenadeInput();
-        CheckAbilityInput();
+        CheckEquipmentInput(0);
+        CheckEquipmentInput(1);
         CheckGravity();
         CheckJumpInput();
         CheckLookInput();
@@ -36,10 +45,31 @@ public class PlayerController : MonoBehaviour
         CheckReloadInput();
         CheckGravity();
         ChangeWeaponInput();
+        CheckInteractInput();
+        CheckShopInput();
 
+
+
+        totalPlayerCurrency = CurrencyManager.singleton.totalCurrency;
     }
 
+    private void CheckShopInput()
+    {
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            shop.OpenShopMenu();
+            isShopOpen = true;
+            //Debug.Log("shop opened");
+        }
+        else 
+        {
+            shop.CloseShopMenu();
+            isShopOpen = false;
+            //Debug.Log("shop closed");
+        }
 
+
+    }
 
     private void ChangeWeaponInput()
     {
@@ -58,9 +88,13 @@ public class PlayerController : MonoBehaviour
     }
 
 
-
-
-
+    private void CheckInteractInput()
+    {
+        if (Input.GetKeyDown(KeyCode.F));
+        {
+            interact.Interact(this); 
+        }
+    }
 
     private void CheckMoveInput()
     {
@@ -140,11 +174,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void CheckAbilityInput()
+    private void CheckEquipmentInput(int slotnumber)
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        if(slotnumber == 0 && Input.GetKeyDown(KeyCode.E))
         {
-            ability.UseAbility();
+            equipment.UseEquipment(0);
+            Debug.Log("using equipment 1");
+        }
+        else if (slotnumber == 1 && Input.GetKeyDown(KeyCode.Q))
+        {
+            
+            equipment.UseEquipment(1);
+            Debug.Log("using equipment 2");
         }
     }
 }

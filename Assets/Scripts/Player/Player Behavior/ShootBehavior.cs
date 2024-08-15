@@ -55,11 +55,6 @@ public class ShootBehavior : MonoBehaviour
                 kvp.Value.SetActive(false);
             }
         }
-
-
-
-
-
     }
 
     

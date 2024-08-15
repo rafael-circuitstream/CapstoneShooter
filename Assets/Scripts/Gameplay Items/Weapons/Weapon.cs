@@ -4,7 +4,8 @@ using UnityEngine;
 using static Weapon;
 
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IInteractable
+
 {
 
     public string weaponName;
@@ -14,8 +15,6 @@ public class Weapon : MonoBehaviour
     public WeaponType weaponType;
     public AmmoType ammoType;
 
-   // [SerializeField] private Bullet bullet; //MAKE A BULLET OBJECT , BULLET POOL
-
     [SerializeField] protected int damage;
     [SerializeField] protected float bulletSpeed;
     [SerializeField] protected float range;
@@ -23,15 +22,9 @@ public class Weapon : MonoBehaviour
     public float reloadTime;
     private bool isReloading = false;
 
-    
     [SerializeField] private GameObject projectilePrefab;
 
-
-    // [SerializeField] private ObjectPool bulletsPool;
-
-
     //VISUALS, change out later for specific variable we need 
-    
     [SerializeField] protected GameObject reticle;
     [SerializeField] protected GameObject weaponVisual;
 
@@ -41,7 +34,7 @@ public class Weapon : MonoBehaviour
          
          
 
-        if (weaponType == WeaponType.Projectile)
+        if (weaponType == WeaponType.Projectile) //PROJECTILE WEAPON
         {
             Vector3 bulletSpawnPosition = position;
             Quaternion bulletSpawnRotation = rotation;
@@ -51,10 +44,11 @@ public class Weapon : MonoBehaviour
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             bulletScript.damage = GetDamage();
         }
-        else if (weaponType == WeaponType.Hitscan) 
+        else if (weaponType == WeaponType.Hitscan)  //HITSCAN WEAPON 
         {
             Debug.Log("Shooting hitscan...");
             RaycastHit hit;
+           
             if (Physics.Raycast(position, rotation * Vector3.forward, out hit, range))
             {
                 Debug.Log("Hitscan hit something...");
@@ -69,7 +63,7 @@ public class Weapon : MonoBehaviour
                 Debug.Log("Hitscan did not hit anything.");
             }
         }
-        else if (weaponType == WeaponType.Melee)
+        else if (weaponType == WeaponType.Melee)  //MELEE WEAPON
         {
             Debug.Log("Shooting melee...");
             Collider[] hits = Physics.OverlapSphere(position, range);
@@ -104,5 +98,19 @@ public class Weapon : MonoBehaviour
         return damage;
     }
 
-    
+    public void Interact(PlayerController player)
+    {
+        //PICK UP WEAPON 
+        //ADD A FUMCTIOM IN THE SHOOTBEHAVIOR 
+    }
+
+    public void OnHoverEnter()
+    {
+        Debug.Log("Weapon pickup available");
+    }
+
+    public void OnHoverExit()
+    {
+       
+    }
 }
