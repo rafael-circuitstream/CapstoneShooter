@@ -8,12 +8,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LookBehavior look;
     [SerializeField] private JumpBehavior jump;
     [SerializeField] private MovementBehavior move;
-    [SerializeField] private ShootBehavior shoot;
+    public ShootBehavior shoot;
     [SerializeField] private GrenadeBehavior grenade;
     [SerializeField] private EquipmentBehavior equipment;
-    [SerializeField] private InteractBehavior interact;
     [SerializeField] private PassiveBehavior passive;
 
+    [SerializeField] private Camera myCamera;
+    [SerializeField] private LayerMask interactableFilter;
+    public IInteractable selectedInteraction;
 
     [SerializeField] private ShopBehavior shop;
     private bool isShopOpen = false;
@@ -45,14 +47,109 @@ public class PlayerController : MonoBehaviour
         CheckReloadInput();
         CheckGravity();
         ChangeWeaponInput();
-        CheckInteractInput();
         CheckShopInput();
 
+
+        WeaponInteract();
+
+        PickUpWeaponInputTest();
+        DropWeaponInputTest();
 
 
         totalPlayerCurrency = CurrencyManager.singleton.totalCurrency;
     }
 
+    private void WeaponInteract()
+    {
+        Ray ray = new Ray(myCamera.transform.position, myCamera.transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 2f, interactableFilter))
+        {
+            WeaponHolder weaponHolder = hit.collider.gameObject.GetComponent<WeaponHolder>();
+            if (weaponHolder != null)
+            {
+                WeaponData weaponData = weaponHolder.myweaponData;
+                if (weaponData != null)
+                {
+                    IInteractable interactable = weaponData as IInteractable;
+                    if(interactable != null)
+                    {
+                        selectedInteraction = interactable;
+                        selectedInteraction.OnHoverEnter();
+                    }
+                } 
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (hit.collider.GetComponent<WeaponHolder>() is WeaponHolder interactedWeaponHolder)
+                {
+                    if (selectedInteraction != null)
+                    {
+                        selectedInteraction.Interact(this, interactedWeaponHolder);
+                        Destroy(weaponHolder.currentWorldWeapon);
+                    }
+                        
+                }
+                //else if (hit.collider.GetComponent<object>() is EquipmentData equipmentData)
+               // { 
+
+              //  }
+                /*
+                if (selectedInteraction != null)
+                {
+                    WeaponData weaponData = hit.collider.GetComponent<WeaponData>();
+
+                    if (weaponData != null)
+                    {
+                        selectedInteraction.Interact(this, weaponData);
+                    }
+                    selectedInteraction.Interact(this, weaponData);
+                }
+                */
+            }
+
+        }
+        else if (selectedInteraction != null)
+        {
+            selectedInteraction.OnHoverExit();
+            selectedInteraction = null;
+        }
+
+    }
+
+
+    private void PickUpWeaponInputTest()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Ray ray = new Ray(myCamera.transform.position, myCamera.transform.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 2f)) // Adjust the distance (2f) as needed
+            {
+                GameObject hitObject = hit.collider.gameObject;
+
+                // Check if the hit object has the "Weapon" tag or is a weapon prefab
+                if (hitObject.CompareTag("Weapon"))
+                {
+                  //  shoot.PickUpWeapon(hitObject);
+
+                    // Optionally, destroy the object in the world after picking it up
+                    Destroy(hitObject);
+                }
+            }
+        }
+    }
+    private void DropWeaponInputTest()
+    {
+        if(Input.GetKeyDown(KeyCode.Y))
+        {
+          //  shoot.DropWeapon(shoot.currentWeaponIndex);
+
+        }
+    }
     private void CheckShopInput()
     {
         if(Input.GetKeyDown(KeyCode.M))
@@ -73,28 +170,19 @@ public class PlayerController : MonoBehaviour
 
     private void ChangeWeaponInput()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.mouseScrollDelta.y > 0)
         {
-            shoot.ChangeWeapon(0);
+            shoot.NextWeapon();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.mouseScrollDelta.y < 0)
         {
-            shoot.ChangeWeapon(1);
-        }
-        else if ( Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            shoot.ChangeWeapon(2);
+            shoot.PreviousWeapon();
         }
     }
 
 
-    private void CheckInteractInput()
-    {
-        if (Input.GetKeyDown(KeyCode.F));
-        {
-            interact.Interact(this); 
-        }
-    }
+
+
 
     private void CheckMoveInput()
     {
@@ -137,7 +225,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0)) //CLICKING TO SHOOT 
         {
-            shoot.Shoot();
+          //  shoot.Shoot();
 
         }
 
@@ -148,11 +236,11 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButton(1) && shoot.isAimingDownSight == false)
         {
-            shoot.AimDownSightStart();
+          //  shoot.AimDownSightStart();
         }
         if (Input.GetMouseButtonUp(1) && shoot.isAimingDownSight )
         {
-            shoot.AimDownSightEnd();
+          //  shoot.AimDownSightEnd();
         }
         
 
@@ -170,7 +258,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            shoot.PlayerReload();
+            //shoot.PlayerReload();
         }
     }
 

@@ -1,38 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Weapon;
 
-
-public class Weapon : MonoBehaviour, IInteractable
+[CreateAssetMenu(menuName = "New Weapon Data")] 
+public class WeaponData : ScriptableObject, IInteractable
 
 {
 
-    public string weaponName;
-    public enum AmmoType { Shrapnel, Energy, Melee } 
+    
+    public enum AmmoType { Shrapnel, Energy, Melee }
     public enum WeaponType { Projectile, Hitscan, Melee }
+
+    private bool isReloading = false;
+
 
     public WeaponType weaponType;
     public AmmoType ammoType;
 
+
+    [SerializeField] protected string weaponName;
+    [SerializeField] protected GameObject weaponModel;
     [SerializeField] protected int damage;
     [SerializeField] protected float bulletSpeed;
     [SerializeField] protected float range;
     [SerializeField] protected float fireRate;
-    public float reloadTime;
-    private bool isReloading = false;
-
+    [SerializeField] protected float reloadTime;
     [SerializeField] private GameObject projectilePrefab;
+
+    public string WeaponName => weaponName;
+    public GameObject GetWeaponModel() => weaponModel;
+
+    public int Damage => damage;
+
+    public float BulletSpeed => bulletSpeed;
+
+    public float Range => range;
+
+    public float FireRate => fireRate;
+
+    public float ReloadTime => reloadTime;
+
+    
+
+
+
+
 
     //VISUALS, change out later for specific variable we need 
     [SerializeField] protected GameObject reticle;
     [SerializeField] protected GameObject weaponVisual;
 
-
+    
     public virtual void Shoot(Vector3 position, Quaternion rotation)
     {
-         
-         
+
+
 
         if (weaponType == WeaponType.Projectile) //PROJECTILE WEAPON
         {
@@ -48,15 +70,15 @@ public class Weapon : MonoBehaviour, IInteractable
         {
             Debug.Log("Shooting hitscan...");
             RaycastHit hit;
-           
+
             if (Physics.Raycast(position, rotation * Vector3.forward, out hit, range))
             {
                 Debug.Log("Hitscan hit something...");
                 HealthSystem healthSystem = hit.transform.GetComponent<HealthSystem>();
-                if( healthSystem != null)
+                if (healthSystem != null)
                 {
                     healthSystem.Damage(damage);
-                }     
+                }
             }
             else
             {
@@ -79,7 +101,7 @@ public class Weapon : MonoBehaviour, IInteractable
                 }
             }
         }
-        
+
     }
 
     public IEnumerator Reload()
@@ -98,12 +120,6 @@ public class Weapon : MonoBehaviour, IInteractable
         return damage;
     }
 
-    public void Interact(PlayerController player)
-    {
-        //PICK UP WEAPON 
-        //ADD A FUMCTIOM IN THE SHOOTBEHAVIOR 
-    }
-
     public void OnHoverEnter()
     {
         Debug.Log("Weapon pickup available");
@@ -111,6 +127,25 @@ public class Weapon : MonoBehaviour, IInteractable
 
     public void OnHoverExit()
     {
-       
+
     }
+    
+    public void Interact(PlayerController player, WeaponHolder weaponHolder)
+    {
+
+        if (player.shoot.currentWeapon != null)
+        {
+            // Drop the current weapon
+            player.shoot.DropWeapon(player.shoot.currentWeaponIndex);
+  
+        }
+
+        player.shoot.PickUpWeapon(weaponHolder.myweaponData);
+
+        //PICK UP WEAPON 
+        //ADD A FUMCTIOM IN THE SHOOTBEHAVIOR 
+    }
+
+    
 }
+ 

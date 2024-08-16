@@ -445,13 +445,17 @@ GameObject:
   - component: {fileID: 5505649760170264425}
   - component: {fileID: 171450825944137780}
   - component: {fileID: 8457631081482580195}
+  - component: {fileID: 4129678702875310515}
+  - component: {fileID: 529518353722779152}
   - component: {fileID: 8616827764196862292}
+  - component: {fileID: 8972703732408207072}
   - component: {fileID: 2174882120291665293}
   - component: {fileID: 3451648727230288731}
-  - component: {fileID: 4129678702875310515}
+  - component: {fileID: 2001258778796343695}
   - component: {fileID: 4064175703137294824}
   - component: {fileID: 8680911425828354541}
-  - component: {fileID: 5267715916948239781}
+  - component: {fileID: 4760226521987465770}
+  - component: {fileID: 4159032662921158955}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -538,7 +542,53 @@ MonoBehaviour:
   move: {fileID: 8616827764196862292}
   shoot: {fileID: 4129678702875310515}
   grenade: {fileID: 8680911425828354541}
-  ability: {fileID: 5267715916948239781}
+  equipment: {fileID: 529518353722779152}
+  interact: {fileID: 8972703732408207072}
+  passive: {fileID: 2001258778796343695}
+  myCamera: {fileID: 0}
+  shop: {fileID: 4159032662921158955}
+  totalPlayerCurrency: 0
+--- !u!114 &4129678702875310515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296928949807555558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e133927c53d999646938c6855b3c6bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponPrefabs:
+  - {fileID: 7156724509094698102, guid: 2aae6cadfd53250418316d3a08e36a95, type: 3}
+  - {fileID: 3544019541029528778, guid: 55d2c2bef0e39ea4fa8223b4c83c1bad, type: 3}
+  - {fileID: 3544019541029528778, guid: 55d2c2bef0e39ea4fa8223b4c83c1bad, type: 3}
+  currentWeaponIndex: 0
+  currentWeapon: {fileID: 0}
+  weaponTip: {fileID: 5125429162439390344}
+  weaponPosition: {fileID: 7693768260532702039}
+  isAimingDownSight: 0
+  mainCamera: {fileID: 1681489009076498514}
+  adsCamera: {fileID: 5512985462947717703}
+--- !u!114 &529518353722779152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296928949807555558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edfeeefe8e9b1842a5fd788b2ee19fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipmentPrefabs:
+  - {fileID: 7031410304418484744, guid: c949447ccbc9e0346803ec6c2e75540a, type: 3}
+  - {fileID: 6686404893746451283, guid: 7121d8e79f1f71240bdc26c012fe611b, type: 3}
+  equipmentSlots:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &8616827764196862292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,6 +605,23 @@ MonoBehaviour:
   sprintMultiplier: 2
   walkMultiplier: 1
   controller: {fileID: 4064175703137294824}
+--- !u!114 &8972703732408207072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296928949807555558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4495d6619cf73284f8ca35ae5a948392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootBehavior: {fileID: 4129678702875310515}
+  myCamera: {fileID: 1681489009076498514}
+  interactableFilter:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &2174882120291665293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,7 +653,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   jumpForce: 10
---- !u!114 &4129678702875310515
+--- !u!114 &2001258778796343695
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -595,18 +662,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8296928949807555558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e133927c53d999646938c6855b3c6bb6, type: 3}
+  m_Script: {fileID: 11500000, guid: cb2fa776dd7bba84a8af75aeee33274f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponPrefabs:
-  - {fileID: 7156724509094698102, guid: 2aae6cadfd53250418316d3a08e36a95, type: 3}
-  - {fileID: 3544019541029528778, guid: 55d2c2bef0e39ea4fa8223b4c83c1bad, type: 3}
-  currentWeapon: {fileID: 0}
-  weaponTip: {fileID: 5125429162439390344}
-  weaponPosition: {fileID: 7693768260532702039}
-  isAimingDownSight: 0
-  mainCamera: {fileID: 1681489009076498514}
-  adsCamera: {fileID: 5512985462947717703}
+  passivePrefab: {fileID: 3738718282577528410, guid: b8d692e4a19aafa4986bdcac97b1e412,
+    type: 3}
+  passive: {fileID: 0}
 --- !u!143 &4064175703137294824
 CharacterController:
   m_ObjectHideFlags: 0
@@ -645,7 +706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a702ef1e0003e47886de465aea3d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5267715916948239781
+--- !u!114 &4760226521987465770
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -654,6 +715,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 8296928949807555558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd59387364145734bbab5bf066d9c346, type: 3}
+  m_Script: {fileID: 11500000, guid: 17bb3db4ac4f86a449b2ba11282ede95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealthPoints: 150
+  healthPoints: 150
+  isDead: 0
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4159032662921158955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296928949807555558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7105407c445eae448b669f56e702cc24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

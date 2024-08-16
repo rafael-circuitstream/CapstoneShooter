@@ -5,7 +5,9 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    public void Interact(PlayerController player);
+    public void Interact(PlayerController player, WeaponHolder weaponHolder);
+
+   // public void Interact(PlayerController player, EquipmentData equipmentData);
 
     public void OnHoverEnter();
 
