@@ -84,12 +84,11 @@ public class pathFinding : MonoBehaviour
         jump += Time.deltaTime * Physics.gravity.y;
 
         
-
-        if ((prevTrans - transform.position).sqrMagnitude < Time.deltaTime * Time.deltaTime)
+        //Emergency jump
+        if ((prevTrans - transform.position).sqrMagnitude < Time.deltaTime * Time.deltaTime * movement_speed * 0.01f)
         {
-            var randomVector = Vector3.right * Random.Range(-1f, 1f) + Vector3.forward * Random.Range(-1f, 1f);
             jump = jumpForce;
-            spot_GoTo = PathNode.Pathfind_List(spot_Current, transform.position + randomVector * 10f);
+            spot_GoTo = PathNode.Pathfind_List(spot_Current, transform.position + transform.forward * 10f);
         }
     }
     void Fall()

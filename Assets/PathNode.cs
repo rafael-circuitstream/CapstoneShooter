@@ -192,6 +192,10 @@ public class PathNode : MonoBehaviour
 			}
 		}
 
+		inheritor.next.Remove(inheritor);
+		inheritor.jump.Remove(inheritor);
+		inheritor.drop.Remove(inheritor);
+
 		DestroyImmediate(remove.gameObject);
 	}
 	public static void NodeFunction_Delete_DisconnectSafely(PathNode node)
@@ -327,75 +331,86 @@ public class PathNode : MonoBehaviour
 	public static List<PathNode> Pathfind_List(PathNode start, Vector3 end)
 	{
 		List<PathNode> path = new();
-		//List<PathNode> ban = new();
+		List<PathNode> ban = new();
 		path.Add(start);
-		//ban.Add(start);
+		ban.Add(start);
+		var attempts = 500;
+		var endPoint = start.Pathfind_ReviseInterconnection(end, new());
 		var hasReachedEndSpot = false;
 
-		var last = start;
+		var lastChecked = start;
 
-
+		if (start == endPoint)
+			return path;
 
 		var distanceTraveled = 0f;
 		while (!hasReachedEndSpot)
 		{
+			attempts--;
+			if (attempts <= 0)
+				break;
 			//Make up a new startpoint to check
 			List<PathNode> checkClosest = new();
-			checkClosest.AddRange(last.next);
-			checkClosest.AddRange(last.jump);
-			checkClosest.AddRange(last.drop);
+			checkClosest.AddRange(lastChecked.next);
+			checkClosest.AddRange(lastChecked.jump);
+			checkClosest.AddRange(lastChecked.drop);
 
-			var last_distanceToTarget = last.GetSqrDistanceTo(end);
+
 			PathNode closest_selected = null;
-			var closest_DistanceFromPrev = 0f;
 
 			hasReachedEndSpot = true;
+
+			var tCost = float.MaxValue;
 			foreach (var closest in checkClosest)
 			{
 
-				var closestD = closest.GetSqrDistanceTo(end);
-				var closestTPrev = closest.GetSqrDistanceTo(last.transform.position);
-				if (last.jump.Contains(closest))
-					closestD *= 1.2f;
+				var closesToEnd = closest.GetSqrDistanceTo(end);
+				var closestFromNext = closest.GetSqrDistanceTo(lastChecked.transform.position);
+				if (lastChecked.jump.Contains(closest))
+					closesToEnd *= 2f;
 
+				var closestTCost = closesToEnd + closestFromNext;
 
-				var closest_ReplaceByMovement = closestTPrev < closest_DistanceFromPrev;
-				var closest_ReplaceByDistance = closestD < last_distanceToTarget;
-				var closest_priority = closest_ReplaceByDistance;
-				if (closest_priority || closest_ReplaceByMovement)
+				if(closest == endPoint)
+				{
+					closest_selected = closest;
+					hasReachedEndSpot = true;
+					break;
+				}
+
+				if (tCost > closestTCost)
 				{
 					hasReachedEndSpot = false;
 
-					if (!closest_priority || path.Contains(closest))
+					if (path.Contains(closest) || ban.Contains(closest))
 						continue;
 
 					closest_selected = closest;
-					last_distanceToTarget = closestD;
-					closest_DistanceFromPrev = closestTPrev;
+					tCost = closestTCost;
 				}
 			}
 
 
 			if (closest_selected != null)
 			{
-				last = closest_selected;
+				lastChecked = closest_selected;
 				path.Add(closest_selected);
 			}
 			else
 			{
-				if (last == start || hasReachedEndSpot)
+				if (lastChecked == start || hasReachedEndSpot)
 					break;
 
 
-				closest_selected = last;
-				path.Remove(last);
-				last = path[path.Count - 1];
+				closest_selected = lastChecked;
+				path.Remove(lastChecked);
+				ban.Add(lastChecked);
+				lastChecked = path[path.Count - 1];
 
-				distanceTraveled -= closest_selected.GetSqrDistanceTo(last.transform.position);
+				distanceTraveled -= closest_selected.GetSqrDistanceTo(lastChecked.transform.position);
 
 			}
 		}
-
 
 
 		return path;
