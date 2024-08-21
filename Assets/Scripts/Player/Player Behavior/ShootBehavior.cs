@@ -37,6 +37,8 @@ public class ShootBehavior : MonoBehaviour
     
     public void ChangeWeapon(int index)
     {
+        if (weapons.Count == 0)
+            return;
         Debug.Log("Changing to weapon at index: " + index);
         index = Mathf.Clamp(index, 0, weapons.Count - 1);
         if (currentWeaponModel != null)

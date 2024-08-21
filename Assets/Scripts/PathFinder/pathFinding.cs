@@ -8,6 +8,8 @@ public class pathFinding : MonoBehaviour
     private PathNode spot_Current;
     private List<PathNode> spot_GoTo = new();
 
+    [SerializeField]
+    private GravitationalBehaviour gravitation;
     public float movement_speed;
     public CharacterController movement;
     public Transform movement_target;
@@ -102,18 +104,22 @@ public class pathFinding : MonoBehaviour
         //Emergency jump
         if ((prevTrans - transform.position).sqrMagnitude < Time.deltaTime * Time.deltaTime * movement_speed * 0.01f)
         {
-            jump = jumpForce;
+            Jump();
             spot_GoTo = PathNode.Pathfind_List(spot_Current, transform.position + transform.forward * 10f);
         }
+    }
+    void Jump()
+	{
+        jump = jumpForce;
     }
     void Fall()
 	{
         movement.Move(transform.up * jump * Mathf.Abs(jump) * Time.deltaTime);
-        jump += Time.deltaTime * Physics.gravity.y;
+        jump += Time.deltaTime * gravitation.currentGravity;
 
         if (movement.isGrounded)
         {
-            jump = Physics.gravity.y;
+            jump = gravitation.currentGravity;
             if (spot_Current.IsInRadiusOfJump(transform.position + Vector3.down, movement_speed * 0.5f) && mustJump)
                 jump = jumpForce;
 

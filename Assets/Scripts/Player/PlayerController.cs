@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
         CheckLookInput();
         CheckAimDownSightInput();
         CheckReloadInput();
-        CheckGravity();
         ChangeWeaponInput();
         CheckShopInput();
 
@@ -152,6 +151,8 @@ public class PlayerController : MonoBehaviour
     }
     private void CheckShopInput()
     {
+        if (!shop)
+            return;
         if(Input.GetKeyDown(KeyCode.M))
         {
             shop.OpenShopMenu();

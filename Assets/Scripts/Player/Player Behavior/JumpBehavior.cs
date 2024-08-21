@@ -4,39 +4,35 @@ using UnityEngine;
 
 public class JumpBehavior : MonoBehaviour
 {
-
-    private const float gravity = -9.81f;
+    [SerializeField]
+    private GravitationalBehaviour gravitation;
     [SerializeField] CharacterController controller;
     [SerializeField] private LayerMask layerFilter;
     [SerializeField] private float jumpForce;
-    private Vector3 velocity;
+    private float airMovement;
     bool IsGrounded()
     {
-        return Physics.CheckSphere(transform.position, controller.radius, layerFilter);
+        return controller.isGrounded;
     }
 
     public void GravityCalculation()
     {
 
-        if (!IsGrounded())
+        airMovement += gravitation.currentGravity * Time.deltaTime;
+        if (IsGrounded())
         {
-
-            velocity.y += gravity * Time.deltaTime;
-        }
-        else if (velocity.y <= 0)
-        {
-            velocity.y = -1f;
+            airMovement = gravitation.currentGravity*0.2f;
         }
 
 
-        controller.Move(velocity * Time.deltaTime);
+        controller.Move(airMovement * Mathf.Abs(airMovement) * Vector3.up * Time.deltaTime);
     }
 
     public void JumpPlayer()
     {
         if (IsGrounded())
         {
-            velocity.y = jumpForce;
+            airMovement = jumpForce;
         }
     }
 }
