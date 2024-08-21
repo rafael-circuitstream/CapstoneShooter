@@ -425,11 +425,11 @@ public class PathNode : MonoBehaviour
 	{
 		return IsInRadius(instanceInRange.position);
 	}
-	public bool IsInRadius(Vector3 positionInRange)
+	public bool IsInRadius(Vector3 positionInRange, float multiplier = 1f)
 	{
 		var pos = (transform.position - positionInRange);
 		pos.y = 0;
-		return pos.sqrMagnitude < radius * radius;
+		return pos.sqrMagnitude < radius * radius * multiplier * multiplier;
 	}
 
 

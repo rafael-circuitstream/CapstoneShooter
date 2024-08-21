@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class pathFinding : MonoBehaviour
 {
-    public PathNode spot_Current;
-    public List<PathNode> spot_GoTo;
+    private PathNode spot_Current;
+    private List<PathNode> spot_GoTo = new();
 
     public float movement_speed;
     public CharacterController movement;
@@ -31,7 +31,6 @@ public class pathFinding : MonoBehaviour
 	void Start()
     {
         spot_Current = PathFinderManager.GetClosestPathNode(transform.position);
-
         LookTarget();
     }
 
@@ -42,12 +41,21 @@ public class pathFinding : MonoBehaviour
         transform.forward = dir;
     }
     bool mustJump = false;
+
+
+    [SerializeField]
+    private SlowRequest spot_delayNewPoint;
     // Update is called once per frame
     void FixedUpdate()
     {
         if (spot_GoTo.Count == 0)
-            spot_GoTo = PathNode.Pathfind_List(spot_Current, movement_target.transform.position);
+            if (spot_delayNewPoint.ExecuteRequest())
+                spot_GoTo = PathNode.Pathfind_List(spot_Current, movement_target.transform.position);
         var inRadius = spot_Current.IsInRadius(transform.position);
+        if(mustJump && spot_Current)
+            inRadius = spot_Current.IsInRadius(transform.position, 1.25f);
+
+
 
         Fall();
         if (spot_GoTo.Count > 0 && !inRadius)
@@ -65,17 +73,24 @@ public class pathFinding : MonoBehaviour
                 mustJump = spot_Current.jump.Contains(jumpNode);
             }
 
+            if (spot_GoTo.Count == 0)
+            {
+                MoveInsideCurrent();
+                return;
+            }
+
             spot_GoTo.RemoveAt(0);
 
             if (spot_GoTo.Count == 0)
                 return;
             spot_Current = spot_GoTo[0];
-
-            return;
         }
 
     }
+    void MoveInsideCurrent()
+	{
 
+	}
     void MoveToTarget()
 	{
         var prevTrans = transform.position;
