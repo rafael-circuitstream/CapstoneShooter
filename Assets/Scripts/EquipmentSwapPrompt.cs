@@ -12,14 +12,17 @@ public class EquipmentSwapPrompt : MonoBehaviour
     private GameObject newEquipment;
     private void Start()
     {
-        replaceEquipment1Button.gameObject.SetActive(false);    
-        replaceEquipment2Button.gameObject.SetActive(false) ;
+        //replaceEquipment1Button.gameObject.SetActive(false);    
+       // replaceEquipment2Button.gameObject.SetActive(false) ;
 
         
 
-        newEquipment = GameObject.FindGameObjectWithTag("Equipment");
+       // newEquipment = GameObject.FindGameObjectWithTag("Equipment");
 
-        replaceEquipment1Button.onClick.AddListener(() => equipmentBehavior.ReplaceEquipment(0, newEquipment));
-        replaceEquipment2Button.onClick.AddListener(() => equipmentBehavior.ReplaceEquipment(1, newEquipment));
+        //replaceEquipment1Button.onClick.AddListener(() => equipmentBehavior.ReplaceEquipment(0, newEquipment));
+       // replaceEquipment2Button.onClick.AddListener(() => equipmentBehavior.ReplaceEquipment(1, newEquipment));
     }
+
+
 }
+ 

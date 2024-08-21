@@ -8,13 +8,11 @@ using UnityEngine;
 public class EquipmentBehavior : MonoBehaviour
 {
     
-    public GameObject currentEquipmentModel1;
-    private EquipmentHolder currentEquipmentHolder1;
-    private EquipmentData currentEquipmentData1;
+    public GameObject attachedEquipmentModel1;
+    public EquipmentData playerEquipmentData1;
 
-    public GameObject currentEquipmentModel2;
-    private EquipmentHolder currentEquipmentHolder2;
-    private EquipmentData currentEquipmentData2;
+    public GameObject attachedEquipmentModel2;
+    public EquipmentData playerEquipmentData2;
 
     [SerializeField] private Transform equipmentPosition;
 
@@ -27,17 +25,14 @@ public class EquipmentBehavior : MonoBehaviour
     public void SetUpEquipment()
     {
 
-        currentEquipmentModel1 = Instantiate(currentEquipmentModel1, equipmentPosition.position, equipmentPosition.rotation, equipmentPosition.transform);
-        currentEquipmentModel2 = Instantiate(currentEquipmentModel2, equipmentPosition.position, equipmentPosition.rotation, equipmentPosition.transform);
+        attachedEquipmentModel1 = Instantiate(playerEquipmentData1.GetPlayerEquipmentVisual(), equipmentPosition.position, equipmentPosition.rotation, equipmentPosition.transform);
+        attachedEquipmentModel2 = Instantiate(playerEquipmentData2.GetPlayerEquipmentVisual(), equipmentPosition.position, equipmentPosition.rotation, equipmentPosition.transform);
 
-        currentEquipmentHolder1 = currentEquipmentModel1.GetComponent<EquipmentHolder>();
-        currentEquipmentHolder2 = currentEquipmentModel2.GetComponent<EquipmentHolder>();
-
-        currentEquipmentData1 = currentEquipmentHolder1.myequipmentData;
-        currentEquipmentData2 = currentEquipmentHolder2.myequipmentData;
+        attachedEquipmentModel1.layer = LayerMask.NameToLayer("AttachedToPlayer");
+        attachedEquipmentModel2.layer = LayerMask.NameToLayer("AttachedToPlayer");
     }
 
-    public void ReplaceEquipment(int equipmentNumber, GameObject newEquipment)
+    public void ReplaceEquipment(int equipmentNumber, EquipmentData newEquipment)
     {
 
         Vector3 dropPosition = transform.position + transform.forward * 2f;
@@ -45,24 +40,29 @@ public class EquipmentBehavior : MonoBehaviour
 
         if (equipmentNumber == 0)
         {
+
             
-            GameObject droppedEquipment1 = Instantiate(currentEquipmentModel1, dropPosition, dropRotation);
+            GameObject droppedEquipment1 = Instantiate(playerEquipmentData1.GetWorldEquipment(), dropPosition, dropRotation);
             
 
-            Destroy(currentEquipmentModel1);
-            currentEquipmentModel1 = newEquipment;
-            currentEquipmentHolder1 = currentEquipmentModel1.GetComponent<EquipmentHolder>();
-            currentEquipmentData1 = currentEquipmentHolder1.myequipmentData;
+            Destroy(attachedEquipmentModel1);
+            playerEquipmentData1 = newEquipment;
+            attachedEquipmentModel1 = Instantiate(playerEquipmentData1.GetPlayerEquipmentVisual(), equipmentPosition.position, equipmentPosition.rotation, equipmentPosition.transform);
+            attachedEquipmentModel1.layer = LayerMask.NameToLayer("AttachedToPlayer");
         }
         else if (equipmentNumber == 1)
         {
-            GameObject droppedEquipment2 = Instantiate(currentEquipmentModel2, dropPosition, dropRotation);
 
-            Destroy(currentEquipmentModel2);
-            currentEquipmentModel2 = newEquipment;
-            currentEquipmentHolder2 = currentEquipmentModel2.GetComponent<EquipmentHolder>();
-            currentEquipmentData2 = currentEquipmentHolder2.myequipmentData;
+
+            GameObject droppedEquipment1 = Instantiate(playerEquipmentData2.GetWorldEquipment(), dropPosition, dropRotation);
+
+
+            Destroy(attachedEquipmentModel2);
+            playerEquipmentData2 = newEquipment;
+            attachedEquipmentModel2 = Instantiate(playerEquipmentData2.GetPlayerEquipmentVisual(), equipmentPosition.position, equipmentPosition.rotation, equipmentPosition.transform);
+            attachedEquipmentModel2.layer = LayerMask.NameToLayer("AttachedToPlayer");
         }
+
     }
     
     

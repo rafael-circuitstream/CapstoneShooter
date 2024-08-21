@@ -8,4 +8,6 @@ public class WeaponHolder : MonoBehaviour
     public WeaponData myweaponData;
     public GameObject currentWorldWeapon;
 
+
+    
 } 

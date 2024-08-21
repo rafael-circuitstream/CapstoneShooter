@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Equipment yellow 3
   m_EditorClassIdentifier: 
   equipmentName: 'Equipment Yellow 3 '
-  equipmentModel: {fileID: 3638984592193359804, guid: a68bc068bfb13774ea5d237fa6e38f2f,
+  equipmentVisual: {fileID: 3638984592193359804, guid: a68bc068bfb13774ea5d237fa6e38f2f,
+    type: 3}
+  worldEquipmentModel: {fileID: 3638984592193359804, guid: a68bc068bfb13774ea5d237fa6e38f2f,
     type: 3}

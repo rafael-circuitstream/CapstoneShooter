@@ -3,36 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "New Equipment Data")]
-public class EquipmentData : ScriptableObject, IInteractable
+public class EquipmentData : ScriptableObject
 {
     [SerializeField] protected string equipmentName;
-    [SerializeField] protected GameObject equipmentModel;
+    [SerializeField] protected GameObject equipmentVisual;
+    [SerializeField] protected GameObject worldEquipmentModel;
 
 
     public string EquipmentName => equipmentName;
-    public GameObject GetEquipmentModel() => equipmentModel;
+    public GameObject GetPlayerEquipmentVisual() => equipmentVisual;
+    public GameObject GetWorldEquipment() => worldEquipmentModel;
 
-    public void Interact(PlayerController player, WeaponHolder weaponHolder)
-    {
-        
-    }
-
-    public void Interact(PlayerController player, EquipmentHolder equipmentHolder)
-    {
-        player.equipmentSwapPrompt.replaceEquipment1Button.gameObject.SetActive(true);
-        player.equipmentSwapPrompt.replaceEquipment2Button.gameObject.SetActive(true);
-
-    }
-
-    public void OnHoverEnter()
-    {
-        Debug.Log("equipment pickup available");
-    }
-
-    public void OnHoverExit()
-    {
-        
-    }
+    
 
     public virtual void UseEquipment()
     {

@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: equipment red 1
   m_EditorClassIdentifier: 
   equipmentName: 'Equipment red 1 '
-  equipmentModel: {fileID: 3638984592193359804, guid: ab25442f5059b10468102e011c4ee97f,
+  equipmentVisual: {fileID: 3638984592193359804, guid: ab25442f5059b10468102e011c4ee97f,
+    type: 3}
+  worldEquipmentModel: {fileID: 3638984592193359804, guid: ab25442f5059b10468102e011c4ee97f,
     type: 3}

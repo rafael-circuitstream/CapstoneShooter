@@ -9,10 +9,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private JumpBehavior jump;
     [SerializeField] private MovementBehavior move;
     public ShootBehavior shoot;
-    [SerializeField] private GrenadeBehavior grenade;
+
+
+    public GrenadeBehavior grenade;
+    public GrenadeManager grenadeManager;
+
+
     public EquipmentBehavior equipment;
-    public EquipmentSwapPrompt equipmentSwapPrompt;
-    [SerializeField] private PassiveBehavior passive;
+    
+    public PassiveBehavior passive;
     
     [SerializeField] private Camera myCamera;
     [SerializeField] private LayerMask interactableFilter;
@@ -51,12 +56,69 @@ public class PlayerController : MonoBehaviour
 
         EquipmentInteract();
         WeaponInteract();
+        PassiveInteract();
+        CurrentGrenadeSelectInput();
+
+
+
+
+
+
+
 
         PickUpWeaponInputTest();
         DropWeaponInputTest();
 
 
         totalPlayerCurrency = CurrencyManager.singleton.totalCurrency;
+    }
+
+
+
+
+
+    private void PassiveInteract()
+    {
+        {
+            Ray ray = new Ray(myCamera.transform.position, myCamera.transform.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 2f, interactableFilter))
+            {
+                PassiveHolder passiveHolder = hit.collider.gameObject.GetComponent<PassiveHolder>();
+                if (passiveHolder != null)
+                {
+                    IInteractable interactable = passiveHolder.GetComponent<IInteractable>();
+                    if (interactable != null)
+                    {
+                        selectedInteraction = interactable;
+                        selectedInteraction.OnHoverEnter();
+                    }
+
+
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+
+                        {
+                            if (selectedInteraction != null)
+                            {
+                                selectedInteraction.Interact(this, passiveHolder.mypassiveData);
+                                Destroy(passiveHolder.gameObject);
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+            else if (selectedInteraction != null)
+            {
+                selectedInteraction.OnHoverExit();
+                selectedInteraction = null;
+            }
+        }
     }
 
     private void EquipmentInteract()
@@ -70,19 +132,35 @@ public class PlayerController : MonoBehaviour
             EquipmentHolder equipmentHolder = hit.collider.gameObject.GetComponent<EquipmentHolder>();
             if (equipmentHolder != null)
             {
-                        selectedInteraction.OnHoverEnter();
-            }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                if (hit.collider.GetComponent<EquipmentHolder>() is EquipmentHolder interactedEquipmentHolder)
+                IInteractable interactable = equipmentHolder.GetComponent<IInteractable>();
+                if (interactable != null)
                 {
-                    if (selectedInteraction != null)
+                    selectedInteraction = interactable;
+                    selectedInteraction.OnHoverEnter();
+                }
+
+
+                if (Input.GetKeyDown(KeyCode.Alpha0))
+                {
+                     
                     {
-                        selectedInteraction.Interact(this, interactedEquipmentHolder);
-                        Destroy(equipmentHolder.currentWorldEquipment);
+                        if (selectedInteraction != null)
+                        {
+                            selectedInteraction.Interact(this, equipmentHolder.myequipmentData);
+                            Destroy(equipmentHolder.gameObject);
+                        }
+
                     }
 
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                {
+
+                        if (selectedInteraction != null)
+                        {
+                            selectedInteraction.Interact(this, equipmentHolder.myequipmentData);
+                            Destroy(equipmentHolder.gameObject);
+                        }
                 }
 
             }
@@ -270,7 +348,42 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            grenade.ThrowGrenade();
+            grenadeManager.ThrowGrenade();
+        }
+
+    }
+
+    private void CurrentGrenadeSelectInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            grenadeManager.currentIndex = 0;
+            grenadeManager.CurrentGrenadeSelect();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            grenadeManager.currentIndex = 1;
+            grenadeManager.CurrentGrenadeSelect();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            grenadeManager.currentIndex = 2;
+            grenadeManager.CurrentGrenadeSelect();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            grenadeManager.currentIndex = 3;
+            grenadeManager.CurrentGrenadeSelect();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            grenadeManager.currentIndex = 4;
+            grenadeManager.CurrentGrenadeSelect();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            grenadeManager.currentIndex = 5;
+            grenadeManager.CurrentGrenadeSelect();
         }
     }
 
