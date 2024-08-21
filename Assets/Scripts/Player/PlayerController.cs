@@ -10,9 +10,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private MovementBehavior move;
     public ShootBehavior shoot;
     [SerializeField] private GrenadeBehavior grenade;
-    [SerializeField] private EquipmentBehavior equipment;
+    public EquipmentBehavior equipment;
+    public EquipmentSwapPrompt equipmentSwapPrompt;
     [SerializeField] private PassiveBehavior passive;
-
+    
     [SerializeField] private Camera myCamera;
     [SerializeField] private LayerMask interactableFilter;
     public IInteractable selectedInteraction;
@@ -38,8 +39,7 @@ public class PlayerController : MonoBehaviour
         CheckShootInput();
         CheckSprintInput();
         CheckGrenadeInput();
-        CheckEquipmentInput(0);
-        CheckEquipmentInput(1);
+        
         CheckGravity();
         CheckJumpInput();
         CheckLookInput();
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         ChangeWeaponInput();
         CheckShopInput();
 
-
+        EquipmentInteract();
         WeaponInteract();
 
         PickUpWeaponInputTest();
@@ -59,6 +59,41 @@ public class PlayerController : MonoBehaviour
         totalPlayerCurrency = CurrencyManager.singleton.totalCurrency;
     }
 
+    private void EquipmentInteract()
+
+    {
+        Ray ray = new Ray(myCamera.transform.position, myCamera.transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 2f, interactableFilter))
+        {
+            EquipmentHolder equipmentHolder = hit.collider.gameObject.GetComponent<EquipmentHolder>();
+            if (equipmentHolder != null)
+            {
+                        selectedInteraction.OnHoverEnter();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (hit.collider.GetComponent<EquipmentHolder>() is EquipmentHolder interactedEquipmentHolder)
+                {
+                    if (selectedInteraction != null)
+                    {
+                        selectedInteraction.Interact(this, interactedEquipmentHolder);
+                        Destroy(equipmentHolder.currentWorldEquipment);
+                    }
+
+                }
+
+            }
+
+        }
+        else if (selectedInteraction != null)
+        {
+            selectedInteraction.OnHoverExit();
+            selectedInteraction = null;
+        }
+    }
     private void WeaponInteract()
     {
         Ray ray = new Ray(myCamera.transform.position, myCamera.transform.forward);
@@ -92,22 +127,7 @@ public class PlayerController : MonoBehaviour
                     }
                         
                 }
-                //else if (hit.collider.GetComponent<object>() is EquipmentData equipmentData)
-               // { 
-
-              //  }
-                /*
-                if (selectedInteraction != null)
-                {
-                    WeaponData weaponData = hit.collider.GetComponent<WeaponData>();
-
-                    if (weaponData != null)
-                    {
-                        selectedInteraction.Interact(this, weaponData);
-                    }
-                    selectedInteraction.Interact(this, weaponData);
-                }
-                */
+                
             }
 
         }
@@ -262,18 +282,5 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void CheckEquipmentInput(int slotnumber)
-    {
-        if(slotnumber == 0 && Input.GetKeyDown(KeyCode.E))
-        {
-            equipment.UseEquipment(0);
-            Debug.Log("using equipment 1");
-        }
-        else if (slotnumber == 1 && Input.GetKeyDown(KeyCode.Q))
-        {
-            
-            equipment.UseEquipment(1);
-            Debug.Log("using equipment 2");
-        }
-    }
+    
 }

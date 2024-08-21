@@ -146,6 +146,9 @@ public class WeaponData : ScriptableObject, IInteractable
         //ADD A FUMCTIOM IN THE SHOOTBEHAVIOR 
     }
 
-    
+    public void Interact(PlayerController player, EquipmentHolder equipmentHolder)
+    {
+        throw new System.NotImplementedException();
+    }
 }
  
