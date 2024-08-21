@@ -5,11 +5,11 @@ using UnityEngine.Events;
 
 public class HealthSystem : MonoBehaviour
 {
-    public int maxHealthPoints;
-    public int healthPoints;
+    public float maxHealthPoints;
+    public float healthPoints;
     public bool isDead;
 
-    public UnityEvent<int> OnHealthChanged;
+    public UnityEvent<float> OnHealthChanged;
 
     void Start()
     {
@@ -17,7 +17,7 @@ public class HealthSystem : MonoBehaviour
 
     }
 
-    public void Damage(int damageCaused)
+    public void Damage(float damageCaused)
     {
         healthPoints -= damageCaused;
         OnHealthChanged.Invoke(healthPoints);
