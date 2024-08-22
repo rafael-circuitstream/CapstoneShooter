@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public PlayerData playerData;
+
+
+
+
+
+
+
     [Header("Player Behavior")]
     [SerializeField] private LookBehavior look;
     [SerializeField] private JumpBehavior jump;
@@ -33,8 +41,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+       // Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -73,7 +81,21 @@ public class PlayerController : MonoBehaviour
         totalPlayerCurrency = CurrencyManager.singleton.totalCurrency;
     }
 
+    public void AssignPlayerData(PlayerData playerData)
+    {
+        this.playerData = playerData;
 
+        
+        for (int i = 0; i < 3; i++)
+        {
+            shoot.weapons.Add(playerData.playerWeaponData[i]);
+        }
+        equipment.playerEquipmentData1 = playerData.playerEquipmentData[0];
+        equipment.playerEquipmentData2 = playerData.playerEquipmentData[1];
+        passive.attachedPassive = playerData.playerPassiveData;
+
+
+    }
 
 
 

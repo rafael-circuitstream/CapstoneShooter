@@ -15,10 +15,7 @@ public class ShopBehavior : MonoBehaviour
 
     public void CloseShopMenu()
     {
-        if(ShopManager.singleton.isShopOpen == true)
-        {
-            ShopManager.singleton.CloseShop();
-        }
+        
         
     }
 

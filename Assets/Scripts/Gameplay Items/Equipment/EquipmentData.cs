@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "New Equipment Data")]
+[System.Serializable]
 public class EquipmentData : ScriptableObject
 {
     [SerializeField] protected string equipmentName;
