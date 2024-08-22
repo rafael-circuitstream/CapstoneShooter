@@ -19,6 +19,9 @@ public struct WeaponStats
 	public float fireRate_burstPPS;
 	public bool fireRate_FullAuto;
 
+	public int ammo_magazineHeld_Max;
+	public int ammo_magazineReserve_Max;
+
 	public float spread;
 	public float reloadTime;
 

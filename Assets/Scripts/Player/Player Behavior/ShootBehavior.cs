@@ -10,13 +10,29 @@ using UnityEngine;
 public class ShootBehavior : MonoBehaviour
 {
     //  [SerializeField] ObjectPool bulletPool;
-    
+    private float burstFireDelay;
+    private float fireRate;
+
+
     public List <WeaponData> weapons = new List<WeaponData> ();
     public int currentWeaponIndex = 0;
     
     public WeaponData currentWeapon;
     public GameObject currentWeaponModel;
 
+    private bool weapon_isHoldingDownShoot;
+    private bool weapon_hasReleasedFire;
+
+
+    private int ammo_magazineHeld;
+    private int ammo_magazineReserve;
+    private float ammo_reloadTime;
+    private bool ammo_isReloading;
+
+
+    private float weapon_FireburstPS;
+    private int weapon_Fireburst;
+    private float weapon_FireRate;
 
 
     [SerializeField] private Transform weaponTip;
@@ -33,8 +49,66 @@ public class ShootBehavior : MonoBehaviour
         ChangeWeapon(currentWeaponIndex);
         
     }
+	private void Update()
+	{
+        
+        if (!currentWeapon)
+            return;
+        if (ammo_magazineHeld <= 0)
+        {
+            PlayerReload();
+            return;
+        }
 
-    
+        //Weapon delays
+        if (weapon_FireburstPS > 0f)
+            weapon_FireburstPS -= Time.deltaTime;
+        if (weapon_FireRate > 0f)
+            weapon_FireRate -= Time.deltaTime;
+        var fire_Rate_IsLoaded = weapon_FireRate <= 0f;
+        var fire_Burst_IsLoaded = weapon_FireburstPS <= 0f;
+        var fire_Burst_HasRounds = weapon_Fireburst > 0;
+        var stats = currentWeapon.weaponStats;
+
+
+
+
+
+        //Shooting conditions
+        var condition_SemiAuto = 
+            !stats.fireRate_FullAuto &&
+            (
+            (fire_Burst_IsLoaded && fire_Burst_HasRounds) ||
+            (fire_Rate_IsLoaded && !fire_Burst_HasRounds && weapon_hasReleasedFire && weapon_isHoldingDownShoot)
+            );
+
+        var condition_FullAuto =
+            stats.fireRate_FullAuto &&
+            fire_Rate_IsLoaded &&
+            weapon_isHoldingDownShoot;
+
+
+        var ShootingConditions = condition_FullAuto || condition_SemiAuto;
+        if (!ShootingConditions)
+            return;
+
+        //Shoot
+
+        weapon_hasReleasedFire = false;
+
+        currentWeapon.Shoot(weaponTip.position, weaponTip.rotation);
+        if (weapon_Fireburst <= 0)
+            weapon_Fireburst = stats.fireRate_burst;
+        --weapon_Fireburst;
+
+
+        weapon_FireburstPS = stats.fireRate_burstPPS;
+        weapon_FireRate = stats.fireRate_PPS;
+
+        --ammo_magazineHeld;
+
+	}
+
     public void ChangeWeapon(int index)
     {
         if (weapons.Count == 0)
@@ -96,38 +170,61 @@ public class ShootBehavior : MonoBehaviour
     
     public void NextWeapon()
     {
+        if (weapons.Count == 0)
+            return;
         currentWeaponIndex = (currentWeaponIndex + 1) % weapons.Count;
         ChangeWeapon(currentWeaponIndex);
     }
 
     public void PreviousWeapon()
     {
+        if (weapons.Count == 0)
+            return;
         currentWeaponIndex = (currentWeaponIndex - 1 + weapons.Count) % weapons.Count;
         ChangeWeapon(currentWeaponIndex);
     }
-    bool hasStoppedShooting;
-	private void Update()
-	{
-		
-	}
-	public void Shoot()
+
+	public void Shoot(bool isShooting)
     {
-        currentWeapon.Shoot(weaponTip.position, weaponTip.rotation);
-        
+        weapon_isHoldingDownShoot = isShooting;
+        if (!isShooting)
+            weapon_hasReleasedFire = true;
     }
 
     public void PlayerReload()
     {
-        currentWeapon.Reload();
+        var stats = currentWeapon.weaponStats;
+        if (ammo_magazineReserve <= 0)
+            return;
+		if (!ammo_isReloading)
+		{
+            ammo_isReloading = true;
+            ammo_reloadTime = stats.reloadTime;
+		}
+        else if(ammo_reloadTime > 0f)
+		{
+
+            ammo_isReloading = ammo_reloadTime > 0f;
+
+
+            if(!ammo_isReloading)
+			{
+                ammo_magazineReserve -= stats.ammo_magazineHeld_Max;
+                ammo_magazineHeld = stats.ammo_magazineHeld_Max;
+
+                weapon_FireburstPS = 0;
+                weapon_Fireburst = 0;
+                weapon_FireRate = 0;
+
+                if(ammo_magazineReserve < 0)
+				{
+                    ammo_magazineHeld += ammo_magazineReserve;
+                    ammo_magazineReserve = 0;
+				}
+			}
+		}
     }
 
-    private void EmptyWeaponReload()
-    {
-         /*currentWeapon ammo goes to zero */
-       // {
-        //    currentWeapon.Reload();
-    //    }
-    }
 
 
     public void  AimDownSightStart()

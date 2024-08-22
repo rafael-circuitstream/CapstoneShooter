@@ -34,25 +34,40 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Movement
         CheckMoveInput();
-        CheckShootInput();
         CheckSprintInput();
+        
+        //Gravity
+        CheckJumpInput();
+        CheckGravity();
+        
+        //Vision
+        CheckLookInput();
+        CheckShootInput();
+
+        //Equipment
         CheckGrenadeInput();
         CheckEquipmentInput(0);
         CheckEquipmentInput(1);
-        CheckGravity();
-        CheckJumpInput();
-        CheckLookInput();
-        CheckAimDownSightInput();
-        CheckReloadInput();
+
+        //Weapon
+        if (shoot.currentWeapon)
+        {
+            CheckAimDownSightInput();
+            CheckReloadInput();
+        }
         ChangeWeaponInput();
+        WeaponInteract();
+        PickUpWeaponInputTest();
+        DropWeaponInputTest();
+
+
+        //Shop
         CheckShopInput();
 
 
-        WeaponInteract();
 
-        PickUpWeaponInputTest();
-        DropWeaponInputTest();
 
 
         totalPlayerCurrency = CurrencyManager.singleton.totalCurrency;
@@ -192,21 +207,13 @@ public class PlayerController : MonoBehaviour
 
     private void CheckSprintInput()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            move.SetSprinting(true);
-        }
-        else
-        {
-            move.SetSprinting(false);
-        }
+        move.SetSprinting(Input.GetKey(KeyCode.LeftShift));
     }
 
     private void CheckJumpInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
-            Debug.Log("Player jumped");
             jump.JumpPlayer();
         }
     }
@@ -224,11 +231,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckShootInput()
     {
-        if(Input.GetMouseButtonDown(0)) //CLICKING TO SHOOT 
-        {
-          //  shoot.Shoot();
-
-        }
+        shoot.Shoot(Input.GetMouseButton(0));
 
         //MAY NEED ADDITIONAL INPUT FOR HOLDING DOWN TO SHOOT burst, or melee
     }    
@@ -259,7 +262,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            //shoot.PlayerReload();
+            shoot.PlayerReload();
         }
     }
 

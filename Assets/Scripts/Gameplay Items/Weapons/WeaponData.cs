@@ -41,12 +41,17 @@ public class WeaponData : ScriptableObject, IInteractable
 
     public virtual void Shoot(Vector3 position, Quaternion rotation)
     {
+        float Spread() => Random.Range(-weaponStats.spread, weaponStats.spread) * 0.5f;
+
+        var rot = Vector3.zero;
+        rot.Set(Spread(), Spread(), 0f);
+
+        rotation.eulerAngles += rot;
 
         if (weaponType == WeaponType.Projectile) //PROJECTILE WEAPON
         {
             var bul = projectilePool.CallItem().GetComponent<Bullet>();
-            bul.bulletStats = weaponStats;
-            bul.Set(position, rotation, bul.bulletStats.projectile_Size * Vector3.one);
+            bul.Set(position, rotation, bul.bulletStats.projectile_Size * Vector3.one, weaponStats);
         }
         else if (weaponType == WeaponType.Hitscan)  //HITSCAN WEAPON 
         {
@@ -58,7 +63,7 @@ public class WeaponData : ScriptableObject, IInteractable
                 var healthSystem = hit.transform.GetComponent<Hitbox>();
                 if (healthSystem != null)
                 {
-                    healthSystem.Damage(weaponStats);
+                    healthSystem.Damage(weaponStats, position);
                 }
             }
         }
@@ -72,20 +77,12 @@ public class WeaponData : ScriptableObject, IInteractable
                     Debug.Log("Melee hit something...");
                     Hitbox healthSystem = hit.transform.GetComponent<Hitbox>();
                     if (healthSystem != null)
-                        healthSystem.Damage(weaponStats);
+                        healthSystem.Damage(weaponStats, position);
                 }
         }
 
     }
 
-    public IEnumerator Reload()
-    {
-        isReloading = true;
-        yield return new WaitForSeconds(weaponStats.reloadTime);
-
-        //ANY VISUAL  ELEMENT FOR WEAPON WOULD BE HERE 
-        isReloading = false;
-    }
 
     public void OnHoverEnter()
     {

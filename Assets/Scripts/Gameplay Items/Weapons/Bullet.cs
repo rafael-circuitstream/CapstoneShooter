@@ -25,18 +25,13 @@ public class Bullet : Pool
         rigidbody.velocity = transform.forward * bulletStats.projectile_Velocity;
         bulletStats.projectile_Range -= bulletStats.projectile_Velocity * Time.deltaTime;
 	}
-	// Start is called before the first frame update
-	void Start()
-    {
-        OnCall.AddListener(CallBullet);
-    }
-    void CallBullet()
-	{
-	}
 
-    public void Set(Vector3 position, Quaternion rotation, Vector3 size)
+    public void Set(Vector3 position, Quaternion rotation, Vector3 size, WeaponStats bulletStats)
 	{
-
+        transform.position = position;
+        transform.rotation = rotation;
+        transform.localScale = size;
+        this.bulletStats = bulletStats;
 	}
 
 }
