@@ -19,11 +19,11 @@ public class HealthSystem : MonoBehaviour
         private Resistence resistence;
 
         [SerializeField]
-        private float regenerationDelay_Max;
-        private float regenerationDelay;
+        private float regenDelay_Max;
+        private float regenDelay;
 
         [SerializeField]
-        private float regeneration_HealthRecoveryPerSecond;
+        private float regenHealthPS;
 
         public float MaxHealth;
         float health;
@@ -36,7 +36,7 @@ public class HealthSystem : MonoBehaviour
 		{
             if (resistence != resistenceSend)
                 return;
-            regenerationDelay = 0f;
+            regenDelay = 0f;
             health -= damage;
             if (health <= 0)
                 health = 0;
@@ -47,10 +47,10 @@ public class HealthSystem : MonoBehaviour
             if (health == MaxHealth)
                 return false;
 
-            if (regenerationDelay < regenerationDelay_Max)
-                regenerationDelay += deltaTime;
+            if (regenDelay < regenDelay_Max)
+                regenDelay += deltaTime;
 			else
-                health = Mathf.Clamp(health + deltaTime * regeneration_HealthRecoveryPerSecond, 0, MaxHealth);
+                health = Mathf.Clamp(health + deltaTime * regenHealthPS, 0, MaxHealth);
             return true;
 		}
         public bool H_IsDepleted()
@@ -110,27 +110,4 @@ public class HealthSystem : MonoBehaviour
         if (health_base.H_IsDepleted())
             OnDeath.Invoke();
     }
-}
-
-public class Hitbox : MonoBehaviour
-{
-    public float normal_damagePercentage = 1f;
-    [SerializeField] private HealthSystem healthSystem;
-    [HideInInspector] public Vector3 damagerPosition;
-
-    public void Damage(WeaponStats weapon, Vector3 damagerPosition)
-	{
-        healthSystem.Damage(weapon);
-        this.damagerPosition = damagerPosition;
-	}
-
-	private void OnValidate()
-	{
-        if (healthSystem)
-            return;
-
-        healthSystem = gameObject.GetComponentInChildren<HealthSystem>(true);
-        if (!healthSystem)
-            healthSystem = gameObject.GetComponentInParent<HealthSystem>(true);
-	}
 }

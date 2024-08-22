@@ -13,16 +13,27 @@ MonoBehaviour:
   m_Name: Green
   m_EditorClassIdentifier: 
   weaponType: 0
-  ammoType: 0
   weaponName: Green
   weaponModel: {fileID: 1245693381092401322, guid: 7c4f2d1c9e4b5d944b148a9003054cd1,
     type: 3}
-  damage: 0
-  bulletSpeed: 0
-  range: 0
-  fireRate: 0
-  reloadTime: 0
-  projectilePrefab: {fileID: 0}
+  weaponStats:
+    damage_shrapnel: 0
+    damage_energy: 0
+    damage_heavy: 0
+    projectile_Size: 0
+    projectile_Velocity: 0
+    projectile_Piercing: 0
+    projectile_Range: 0
+    fireRate_PPS: 0
+    fireRate_burst: 0
+    fireRate_burstPPS: 0
+    shootingStyle: 0
+    ammo_magazineHeld_Max: 0
+    ammo_magazineReserve_Max: 0
+    spread: 0
+    reloadTime: 0
+  projectilePool:
+    nameOfPool: 
   reticle: {fileID: 0}
   weaponVisual: {fileID: 1245693381092401322, guid: 7c4f2d1c9e4b5d944b148a9003054cd1,
     type: 3}

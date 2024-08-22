@@ -800,6 +800,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4760226521987465770, guid: e07d3ad6f19ac0d43a2970d92441c75b,
         type: 3}
+      propertyPath: health.Array.data[0].regenHealthPS
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4760226521987465770, guid: e07d3ad6f19ac0d43a2970d92441c75b,
+        type: 3}
+      propertyPath: health.Array.data[1].regenHealthPS
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4760226521987465770, guid: e07d3ad6f19ac0d43a2970d92441c75b,
+        type: 3}
+      propertyPath: health.Array.data[2].regenHealthPS
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4760226521987465770, guid: e07d3ad6f19ac0d43a2970d92441c75b,
+        type: 3}
+      propertyPath: health.Array.data[0].regenDelay_Max
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4760226521987465770, guid: e07d3ad6f19ac0d43a2970d92441c75b,
+        type: 3}
+      propertyPath: health.Array.data[1].regenDelay_Max
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4760226521987465770, guid: e07d3ad6f19ac0d43a2970d92441c75b,
+        type: 3}
+      propertyPath: health.Array.data[2].regenDelay_Max
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4760226521987465770, guid: e07d3ad6f19ac0d43a2970d92441c75b,
+        type: 3}
       propertyPath: health.Array.data[0].regenerationDelay_Max
       value: 8
       objectReference: {fileID: 0}
