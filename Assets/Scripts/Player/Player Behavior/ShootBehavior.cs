@@ -105,10 +105,13 @@ public class ShootBehavior : MonoBehaviour
         currentWeaponIndex = (currentWeaponIndex - 1 + weapons.Count) % weapons.Count;
         ChangeWeapon(currentWeaponIndex);
     }
-
-    public void Shoot()
+    bool hasStoppedShooting;
+	private void Update()
+	{
+		
+	}
+	public void Shoot()
     {
-
         currentWeapon.Shoot(weaponTip.position, weaponTip.rotation);
         
     }

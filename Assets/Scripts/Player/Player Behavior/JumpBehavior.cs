@@ -9,13 +9,21 @@ public class JumpBehavior : MonoBehaviour
     [SerializeField] CharacterController controller;
     [SerializeField] private LayerMask layerFilter;
     [SerializeField] private float jumpForce;
+    [SerializeField] private float coyoteTime_Max;
+    private float coyoteTime;
     private float airMovement;
     bool IsGrounded()
     {
         return controller.isGrounded;
     }
-
-    public void GravityCalculation()
+	private void Update()
+	{
+        if (IsGrounded())
+            coyoteTime = coyoteTime_Max;
+        else
+            coyoteTime -= Time.deltaTime;
+	}
+	public void GravityCalculation()
     {
 
         airMovement += gravitation.currentGravity * Time.deltaTime;
@@ -30,8 +38,9 @@ public class JumpBehavior : MonoBehaviour
 
     public void JumpPlayer()
     {
-        if (IsGrounded())
+        if (coyoteTime > 0f)
         {
+            coyoteTime = 0f;
             airMovement = jumpForce;
         }
     }

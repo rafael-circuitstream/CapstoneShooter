@@ -4,7 +4,7 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
 	[System.Serializable]
-	private class PoolableItem
+	public class PoolableItem
 	{
 		public string name = "null";
 		public Pool referenceItem;
@@ -43,7 +43,7 @@ public class PoolManager : MonoBehaviour
 			item.folder.parent = transform;
 		}
 	}
-	static private PoolableItem Retrieve(string name, out int index)
+	static public PoolableItem Retrieve(string name, out int index)
 	{
 		for (index = 0; index < Singleton().pool.Length; index++)
 		{
@@ -55,6 +55,30 @@ public class PoolManager : MonoBehaviour
 	}
 
 
+	public static Pool Item_Call(PoolableItem item)
+	{
+
+		Pool poolItem = null;
+		if (item.spawned.Count == 0)
+		{
+			poolItem = Instantiate(item.referenceItem);
+			poolItem.transform.parent = item.folder;
+			for (int i = 0; i < Singleton().pool.Length; i++)
+				if(item == Singleton().pool[i])
+				{
+					poolItem.index = i;
+					break;
+				}
+		}
+		else
+			poolItem = item.spawned.Dequeue();
+
+		poolItem.gameObject.SetActive(true);
+		poolItem.OnCall.Invoke();
+
+
+		return poolItem;
+	}
 	public static Pool Item_Call(string name)
 	{
 		var item = Retrieve(name, out var index);
@@ -77,7 +101,21 @@ public class PoolManager : MonoBehaviour
 	}
 	public static void Item_Dismiss(Pool item)
 	{
+		if (item.index < 0)
+		{
+			for (var i = 0; i < Singleton().pool.Length; i++)
+				if (item.transform.parent == Singleton().pool[i].folder)
+				{
+					item.index = i;
+					break;
+				}
+
+			Destroy(item.gameObject);
+			return;
+		}
+
 		Singleton().pool[item.index].spawned.Enqueue(item);
+
 		item.OnDismiss.Invoke();
 		item.gameObject.SetActive(false);
 	}

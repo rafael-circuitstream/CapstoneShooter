@@ -3,7 +3,7 @@
 public class Pool : MonoBehaviour
 {
 	[HideInInspector]
-	public int index;
+	public int index = -1;
 
 	public UnityEngine.Events.UnityEvent OnCall;
 	public UnityEngine.Events.UnityEvent OnDismiss;
