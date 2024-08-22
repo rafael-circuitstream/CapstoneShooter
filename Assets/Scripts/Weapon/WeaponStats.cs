@@ -5,23 +5,40 @@ using UnityEngine;
 [System.Serializable]
 public struct WeaponStats
 {
+	[Header("Damage values")]
 	public float damage_shrapnel;
 	public float damage_energy;
 	public float damage_heavy;
 
+
+	[Header("Projectile stats")]
 	public float projectile_Size;
 	public float projectile_Velocity;
 	public int projectile_Piercing;
 	public float projectile_Range;
 
+
+	[Header("Firerate")]
 	public float fireRate_PPS;
 	public int fireRate_burst;
 	public float fireRate_burstPPS;
-	public bool fireRate_FullAuto;
+	private enum fireRateStyle { full_auto, single_Shot}
+	[SerializeField]
+	private fireRateStyle shootingStyle;
+	[HideInInspector]
+	public bool fireRate_FullAuto
+	{
+		get => shootingStyle == fireRateStyle.full_auto;
+		set => shootingStyle = value ? fireRateStyle.full_auto : fireRateStyle.single_Shot;
+	}
 
+
+	[Header("Magazine and clips")]
 	public int ammo_magazineHeld_Max;
 	public int ammo_magazineReserve_Max;
 
+
+	[Header("Other")]
 	public float spread;
 	public float reloadTime;
 

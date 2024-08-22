@@ -8,14 +8,12 @@ public class WeaponData : ScriptableObject, IInteractable
 {
 
     
-    public enum AmmoType { Shrapnel, Energy, Melee }
     public enum WeaponType { Projectile, Hitscan, Melee }
 
     private bool isReloading = false;
 
 
     public WeaponType weaponType;
-    public AmmoType ammoType;
 
 
     [SerializeField] protected string weaponName;
