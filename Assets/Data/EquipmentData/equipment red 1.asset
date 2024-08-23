@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aca47cde8164eb64d8c3a62937ec914a, type: 3}
+  m_Name: equipment red 1
+  m_EditorClassIdentifier: 
+  equipmentName: 'Equipment red 1 '
+  equipmentVisual: {fileID: 3638984592193359804, guid: ab25442f5059b10468102e011c4ee97f,
+    type: 3}
+  worldEquipmentModel: {fileID: 3638984592193359804, guid: ab25442f5059b10468102e011c4ee97f,
+    type: 3}

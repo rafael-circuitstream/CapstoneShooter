@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Currency : MonoBehaviour
-{
+{ 
     public int currencyValue = 10;
     public void OnTriggerEnter(Collider other)
     {
@@ -11,8 +11,5 @@ public class Currency : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void AddCurrency()
-    {
-
-    }
+    
 }

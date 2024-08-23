@@ -4,8 +4,27 @@ using UnityEngine;
 
 public class GrenadeBehavior : MonoBehaviour
 {
-    public void ThrowGrenade()
+
+
+    private void Start()
     {
-        //THROW GRENADE
+
+       
+
+    }
+
+
+    public void ThrowGrenade(GrenadeData currentGrenade)
+    {
+
+        GameObject worldGrenade = currentGrenade.GetWorldGrenade();
+        if (worldGrenade == null)
+        {
+            Debug.LogError("worldGrenade is null");
+            return;
+        }
+
+        Instantiate(worldGrenade);
+        //SPECIFICALLY FOR PHYSICS,INPUT, STUFF TIED TO GRENADE AND PLAYER, THE GRENADE INVENTORY TIED TO GRENADEMANGER
     }
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PassiveBehavior : MonoBehaviour
 {
-    [SerializeField] private GameObject passivePrefab;
-    [SerializeField] private Passive passive;
+    public PassiveData attachedPassive;
 
     private void Start()
     {
@@ -14,8 +13,20 @@ public class PassiveBehavior : MonoBehaviour
 
     public void SetPassive()
     {
+        //ANYGAME OBJECT SETUP, REFRENCE EQUIPMENT 
+        
+    }
 
-        passive = passivePrefab.GetComponent<Passive>();
+    public void SwapPassive(PassiveData newPassive)
+    {
+        Vector3 dropPosition = transform.position + transform.forward * 2f;
+        Quaternion dropRotation = transform.rotation;
+
+        GameObject droppedPassive = Instantiate(attachedPassive.GetWorldPassive(), dropPosition, dropRotation);
+
+        attachedPassive = newPassive; 
+        
+
     }
 
 

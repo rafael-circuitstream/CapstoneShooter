@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "New Weapon Data")] 
+[CreateAssetMenu(menuName = "New Weapon Data")]
+[System.Serializable]
 public class WeaponData : ScriptableObject, IInteractable
 
 {
@@ -108,6 +109,14 @@ public class WeaponData : ScriptableObject, IInteractable
         //ADD A FUMCTIOM IN THE SHOOTBEHAVIOR 
     }
 
-    
+    public void Interact(PlayerController player, EquipmentHolder equipmentHolder)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Interact(PlayerController player, EquipmentData equipmentData)
+    {
+        throw new System.NotImplementedException();
+    }
 }
  
